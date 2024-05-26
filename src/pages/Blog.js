@@ -14,6 +14,7 @@ const Blog = () => {
     const [comments, setComments] = useState([])
     const [toggleOptions, setToggleOptions] = useState(false)
     const [isActive, setIsActive] = useState(false)
+    const [toggleUpdateComment, setToggleUpdateComment] = useState({state:false, id:""})
 
     useEffect(() => {
         (async() => {
@@ -26,6 +27,7 @@ const Blog = () => {
                 })
             
                 let response = await resp.json()
+                console.log(response)
             
                 if(resp.ok){
                     setBlog(response.blog)
@@ -47,6 +49,7 @@ const Blog = () => {
                 })
             
                 let response = await resp.json()
+                console.log(response)
                 
                 if(resp.ok){
                     setComments(response.commentList)
@@ -144,6 +147,18 @@ const Blog = () => {
     return (  
         <body className="m-0 p-0 bg-custom-black min-h-screen flex flex-col items-center justify-between text-white">
             <Header nav={true}/>
+            {toggleUpdateComment.state && <div className="fixed w-full h-screen flex items-center justify-center z-10 bg-black bg-opacity-50">
+                <div className="w-80 h-80 flex flex-col justify-between items-center bg-custom-lightGrey rounded-[10px]">
+                    <div className="flex justify-between items-center w-full p-4">
+                        <h3 className="m-0 font-medium text-base">Update Comment</h3>
+                        <img src="/images/close.png" class="closeComment" width="15px" height="15px" onClick={() => setToggleUpdateComment({state:false, id:""})}/>
+                    </div>
+                    <form className="flex flex-col gap-4 w-[90%] items-center mb-6">
+                        <textarea className="w-[98%] h-40 resize-none bg-custom-lightGrey border-[1.5px] border-custom-orange text-white rounded-[10px]"></textarea>
+                        <button className="flex items-center justify-center bg-custom-orange text-white border-none rounded-[20px] w-28 h-[2.2rem]">Submit</button>
+                    </form>
+                </div>
+            </div>}
             <div className="flex flex-col items-start w-4/5 gap-12 mt-12 mb-12">
                 <div className="flex w-full flex-col items-start border-b-2 border-custom-orange pb-4 gap-4">
                     <h1 className="font-semibold text-4xl m-0">{blog?.title}</h1>
@@ -180,7 +195,7 @@ const Blog = () => {
                     <h3>Comments</h3>
                     <div className="flex w-3/5 items-end gap-4">
                         <div className="w-12 h-12 flex items-center justify-center overflow-hidden rounded-full">
-                            <img src={userInfo.imageUrl} className="w-full h-full object-cover"/>
+                            <img src={userInfo?userInfo.imageUrl:'https://res.cloudinary.com/ditrc0kph/image/upload/v1711450197/rgrjpswkhjey1xgunqhr.png'} className="w-full h-full object-cover"/>
                         </div>
                         <input type="text" placeholder="Type your comment here" className="outline-none border-b-[1.5px] border-custom-orange bg-custom-black text-white w-[90%]"/>
                     </div>
@@ -197,14 +212,14 @@ const Blog = () => {
                                             <h3 className="m-0 text-sm font-normal text-[color:rgb(189,189,189)]">{comment.createdAt}</h3>
                                         </div>
                                     </div>
-                                    <img src="/images/dots/png" width="20" height="20" onClick={() => setToggleOptions(true)}/>
+                                    <img src="/images/dots.png" width="20" height="20" onClick={() => setToggleOptions(true)}/>
                                 </div>
                                 {toggleOptions && <div className="absolute right-0 top-10 w-40 h-24 bg-custom-lightGrey rounded-lg flex flex-col overflow-hidden">
-                                    <div className="flex items-center justify-end w-full pt-2 pb-2">
+                                    <div className="flex items-center justify-end w-full pt-2 pb-2 pr-2">
                                         <img src="/images/close.png" width="12" height="12" onClick={() => setToggleOptions(false)}/>
                                     </div>
-                                    <button className="flex items-center justify-center w-full h-8 bg-custom-lightGrey text-white border-none border-t-[0.5px] border-t-[#a2a2a2] cursor-pointer">Update comment</button>
-                                    <button className="flex items-center justify-center w-full h-8 bg-custom-lightGrey text-white border-none border-t-[0.5px] border-t-[#a2a2a2] cursor-pointer">Delete comment</button>
+                                    <button className="flex items-center justify-center w-full h-8 bg-custom-lightGrey text-white border-none border-t-[0.5px] border-t-[#a2a2a2] cursor-pointer hover:bg-[color:#5f5f5f]" onClick={() => setToggleUpdateComment({state:true, id:comment._id})}>Update comment</button>
+                                    <button className="flex items-center justify-center w-full h-8 bg-custom-lightGrey text-white border-none border-t-[0.5px] border-t-[#a2a2a2] cursor-pointer hover:bg-[color:#5f5f5f]">Delete comment</button>
                                 </div>}
                                 <div className="text-justify text-sm self-start">{comment.comment}</div>
                             </div>
