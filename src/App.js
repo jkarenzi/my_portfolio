@@ -16,9 +16,13 @@ import Queries from './pages/Queries';
 import Query from './pages/Query';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import { AuthProvider } from './contexts/AuthContext';
+import { useContext } from 'react';
+import { AuthContext } from './contexts/AuthContext';
+
 
 function App() {
+  const {token} = useContext(AuthContext) 
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path='/'>
@@ -29,19 +33,18 @@ function App() {
         <Route path='portfolio' element={<Portfolio/>}/>
         <Route path='blogs' element={<Blogs/>}/>
         <Route path='blogs/:id' element={<Blog/>}/>
-        <Route path='profile' element={<Profile/>}/>
-        <Route path='dashboard' element={<Dashboard/>}/>
-        <Route path='usermgt' element={<UserMgt/>}/>
-        <Route path='blogmgt' element={<BlogMgt/>}/>
-        <Route path='queries' element={<Queries/>}/>
-        <Route path='query/:id' element={<Query/>}/>
+        <Route path='profile' element={token?<Profile/>:<Navigate to='/'/>}/>
+        <Route path='dashboard' element={token?<Dashboard/>:<Navigate to='/'/>}/>
+        <Route path='usermgt' element={token?<UserMgt/>:<Navigate to='/'/>}/>
+        <Route path='blogmgt' element={token?<BlogMgt/>:<Navigate to='/'/>}/>
+        <Route path='queries' element={token?<Queries/>:<Navigate to='/'/>}/>
+        <Route path='query/:id' element={token?<Query/>:<Navigate to='/'/>}/>
       </Route>
     )
   )
 
   return (
-    <AuthProvider>
-      <div className="App">
+    <div className="App">
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -53,9 +56,8 @@ function App() {
         draggable
         pauseOnHover
       />
-        <RouterProvider router={router}/>
-      </div>
-    </AuthProvider>
+      <RouterProvider router={router}/>
+    </div>
   );
 }
 

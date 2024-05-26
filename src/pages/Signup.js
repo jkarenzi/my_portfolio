@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { successToast, errorToast } from "../components/Toast";
-import { Loader } from "../components/Loader";
+
 
 const Signup = () => {
     const navigate = useNavigate()
@@ -10,7 +10,7 @@ const Signup = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
-    const [toggleLoader, setToggleLoader] = useState(false)
+    const [isActive, setIsActive] = useState(false)
 
     const signup = async(e) => {
         e.preventDefault()
@@ -19,7 +19,7 @@ const Signup = () => {
             email,
             password
         }
-        setToggleLoader(true)
+        setIsActive(true)
 
         try{
             const resp = await fetch(`${url}/auth/signup`,{
@@ -31,7 +31,7 @@ const Signup = () => {
             })
         
             let response = await resp.json()
-            setToggleLoader(false)
+            setIsActive(false)
 
             if(resp.status === 201){
                 successToast(response.msg)
@@ -64,13 +64,12 @@ const Signup = () => {
                         <input type="password" onChange={(e) => setPassword(e.target.value)} className="w-full h-8 rounded-md bg-custom-black border border-custom-orange text-white"/>
                         <div className="bg-red-600 text-sm"></div>
                     </div>
-                    <button type="submit" className="flex justify-center items-center bg-custom-orange text-white border-none rounded-3xl w-32 h-10 mt-4 no-underline">Signup</button>
+                    <button type="submit" className={`flex justify-center items-center ${isActive?'bg-custom-darkOrange':'bg-custom-orange'} text-white border-none rounded-3xl w-32 h-10 mt-4 no-underline`}>Signup</button>
                 </form>
                 <div className="flex items-center gap-2 mt-4">
                     <h3 className="m-0 font-normal text-base">Already have an account?</h3>
                     <Link to="/login" className="text-custom-orange underline">Login</Link>
                 </div>
-                { toggleLoader && <Loader/>}
             </div>
         </body>
     );

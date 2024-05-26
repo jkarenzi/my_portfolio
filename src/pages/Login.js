@@ -12,6 +12,7 @@ const Login = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [toggleLoader, setToggleLoader] = useState(false)
+    const [isActive, setIsActive] = useState(false)
 
     const decodeJWT = (token) => {
         const parts = token.split('.');
@@ -32,7 +33,7 @@ const Login = () => {
             username,
             password
         }
-        setToggleLoader(true)
+        setIsActive(true)
 
         try{
             const resp = await fetch(`${url}/auth/login`,{
@@ -44,7 +45,7 @@ const Login = () => {
             })
     
             let response = await resp.json()
-            setToggleLoader(false)
+            setIsActive(false)
             console.log(response)
             if(resp.status === 200){
                 successToast(response.msg)
@@ -73,7 +74,7 @@ const Login = () => {
                         <input type="password" onChange={(e) => setPassword(e.target.value)} className="w-full h-8 rounded-md bg-custom-black border border-custom-orange text-white"/>
                         <div className="bg-red-600 text-sm"></div>
                     </div>
-                    <button type="submit" className="flex justify-center items-center bg-custom-orange text-white border-none rounded-3xl w-32 h-10 mt-4 no-underline">Login</button>
+                    <button type="submit" className={`flex justify-center items-center ${isActive?'bg-custom-darkOrange':'bg-custom-orange'} text-white border-none rounded-3xl w-32 h-10 mt-4 no-underline`}>Login</button>
                 </form>
                 <h3 className="m-0 mt-4 mb-4">OR</h3>
                 <button className="flex justify-center items-center bg-custom-orange text-white border-none rounded-3xl w-56 h-10 gap-2">
@@ -84,7 +85,6 @@ const Login = () => {
                     <h3 className="m-0 font-normal text-base">Dont have an account?</h3>
                     <Link to="/signup" className="text-custom-orange underline">Sign up</Link>
                 </div>
-                { toggleLoader && <Loader/>}
             </div>
         </body>
     );

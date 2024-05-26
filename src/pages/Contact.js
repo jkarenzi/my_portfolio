@@ -3,21 +3,28 @@ import Footer from "../components/Footer";
 import { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { Loader } from "../components/Loader";
+import { errorToast, successToast } from "../components/Toast";
 
 
 const Contact = () => {
     const {token, userInfo} = useContext(AuthContext) 
     const url = process.env.REACT_APP_BACKEND_URL
     const [query, setQuery] = useState("")
-    const [toggleLoader, setToggleLoader] = useState(false)
+    const [isActive, setIsActive] = useState(false)
 
     const submitQuery = async(e) => {
         e.preventDefault()
+        if(!userInfo){
+            errorToast('Please login in order to send a message')
+            return;
+        }
+
         const formData = {
             userId: userInfo._id,
             query
         }
+
+        setIsActive(true)
 
         try{
             const resp = await fetch(`${url}/queries/create_query`,{
@@ -30,14 +37,15 @@ const Contact = () => {
             })
         
             let response = await resp.json()
+            setIsActive(false)
             
             if(resp.status === 201){
-                alert(response.msg)
+                successToast(response.msg)
             }else{
-                alert(response.msg)
+                errorToast(response.msg)
             }
         }catch(err){
-            alert(err.message)
+            errorToast(err.message)
         }
     }
 
@@ -61,8 +69,7 @@ const Contact = () => {
                     <textarea onChange={(e) => setQuery(e.target.value)} className="bg-custom-black text-white border-boxBig border-custom-orange w-full h-32 rounded-lg"></textarea>
                     <div className="bg-red-600"></div>
                 </div>
-                <button type="submit" className="flex justify-center items-center bg-custom-orange text-white border-none rounded-3xl w-28 h-8 mt-4 no-underline">Submit</button>
-                { toggleLoader && <Loader/>}
+                <button type="submit" className={`flex justify-center items-center ${isActive?'bg-custom-darkOrange':'bg-custom-orange'} text-white border-none rounded-3xl w-28 h-8 mt-4 no-underline`}>Submit</button>
             </form>
             <Footer/>
         </body> 

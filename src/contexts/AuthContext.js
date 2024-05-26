@@ -28,16 +28,11 @@ const authReducer = (state, action) => {
 }
  
 export const AuthProvider = ({children}) => {
-    let initialState = {}
-
-    const token = localStorage.getItem('token')
-    initialState.token = token
-
-    if(token){
-        initialState.userInfo = decodeJWT(token)
-    }else{
-        initialState.userInfo = null
-    }
+    const token = localStorage.getItem('token');
+    const initialState = {
+        token: token || null,
+        userInfo: token ? decodeJWT(token) : null,
+    };
     
     const [ authData, dispatch ] = useReducer(authReducer, initialState)
 

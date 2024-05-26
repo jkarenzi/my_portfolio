@@ -28,34 +28,13 @@ const Portfolio = () => {
                 <div className="flex flex-col gap-2 mt-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                            <img src="/images/meta-logo.png" width="20px" height="15px"/>
-                            <h3 className="m-0 font-medium text-xl">Software engineer at Meta</h3>
+                            {/* <img src="/images/google_p.png" width="20px" height="20px"/> */}
+                            <h3 className="m-0 font-medium text-xl">Apprentice at Andela</h3>
                         </div>
-                        <h3 className="m-0 font-medium text-xl">June 2019-Dec 2022</h3>
+                        <h3 className="m-0 font-medium text-xl">Feb 2024 - Present</h3>
                     </div>
-                    <div className="text-justify font-thin">
-                        I played a pivotal role in developing cutting-edge technologies that power 
-                        some of the world's most widely-used platforms. I collaborated closely with
-                        cross-functional teams to design, implement, and deploy robust solutions 
-                        that enhance user experiences and drive business growth. My contributions 
-                        spanned a range of projects, from optimizing algorithmic performance to 
-                        architecting scalable backend systems.
-                    </div>
-                </div>
-                <div className="flex flex-col gap-2 mt-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <img src="/images/google_p.png" width="20px" height="20px"/>
-                            <h3 className="m-0 font-medium text-xl">Software engineer at Google</h3>
-                        </div>
-                        <h3 className="m-0 font-medium text-xl">Mar 2020-Aug 2021</h3>
-                    </div>
-                    <div className="text-justify font-thin">
-                        Working in a fast-paced environment like Google has honed my problem-solving
-                        skills and taught me the importance of teamwork and collaboration in delivering
-                        high-quality software products. My time at Google has been incredibly rewarding,
-                        allowing me to grow both personally and professionally while making a meaningful
-                        impact on the world through technology.
+                    <div className="text-justify font-thin">            
+                        The Andela Technical Leadership Program has been instrumental in advancing my programming skills to industry standards. Through a series of meticulously designed training sessions and real-world projects, I have honed my technical abilities, enabling me to tackle complex programming challenges with confidence. Additionally, the program has significantly improved my communication skills, an essential trait for any successful software developer. At Andela, the emphasis on collaboration through numerous team projects has taught me the importance of teamwork and effective communication. This experience has not only enriched my technical knowledge but also prepared me to work seamlessly with others in a professional environment.
                     </div>
                 </div>
             </div>

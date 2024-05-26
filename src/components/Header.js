@@ -1,11 +1,14 @@
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = (props) => {
     const location = useLocation()
-    const {userInfo} = useContext(AuthContext)
+    const {userInfo, dispatch} = useContext(AuthContext)
+    const [toggleMenu, setToggleMenu] = useState(false)
+    const navigate = useNavigate()
     return (
         <header className="flex items-center justify-between w-full bg-custom-headerBlack h-16">
             <img className="m-12" src="/images/MJ.png" width="40px" height="20px"/>
@@ -15,11 +18,14 @@ const Header = (props) => {
                 <Link className={`flex items-center justify-center hover:text-custom-orange no-underline h-full pl-4 pr-4 ${(location.pathname === '/portfolio')?'text-custom-orange':'text-white'}`} to="/portfolio">Portfolio</Link>
                 <Link className={`flex items-center justify-center hover:text-custom-orange no-underline h-full pl-4 pr-4 ${(location.pathname === '/blogs')?'text-custom-orange':'text-white'}`} to="/blogs">Blogs</Link>
             </nav>}
-            <div className="flex items-center justify-center rounded-full w-10 h-10 border-boxBig border-custom-orange mr-8">
+            {userInfo?
+            <div className="flex items-center justify-center rounded-full w-10 h-10 border-boxBig border-custom-orange mr-8" onClick={() => setToggleMenu(prev => !prev)}>
                 <div className="flex items-center justify-center rounded-full w-boxSmall h-boxSmall overflow-hidden">
                     <img className="w-full h-full object-cover" src={userInfo.imageUrl}/>
                 </div>
-            </div>
+            </div>:
+            <button className="flex items-center justify-center px-4 py-1 rounded-lg border-none bg-custom-orange text-white mr-8" onClick={() => navigate('/login')}>Login</button>}
+
             <img className="hidden mr-4" src="/images/hamburger.png" width="20px" height="15px"/>
             <div className="hidden flex-col items-center bg-custom-headerBlack text-white h-48 w-28 absolute top-16 right-0">
                 <a className="flex items-center justify-start h-1/4 w-5/6 pl-4 no-underline text-white text-sm font-normal hover:bg-custom-lightGrey" href="./index.html">About</a>
@@ -29,10 +35,10 @@ const Header = (props) => {
                 <a className="flex items-center justify-start h-1/4 w-5/6 pl-4 no-underline text-white text-sm font-normal hover:bg-custom-lightGrey" href="./profile.html">Profile</a>
                 <button className="flex items-center justify-start bg-custom-headerBlack text-white border-none w-full h-12 pl-3 hover:bg-custom-lightGrey">Logout</button>
             </div>
-            <div className="hidden flex-col items-center justify-center gap-2 bg-custom-headerBlack text-white h-16 w-24 absolute top-16 right-0">
-                <a className="flex items-center justify-center w-full no-underline text-white text-sm font-normal h-2/4 hover:bg-custom-lightGrey" href="./profile.html">Profile</a>
-                <button className="flex items-center justify-center bg-custom-headerBlack text-white border-none w-full h-2/4">Logout</button>
-            </div>
+            {toggleMenu && <div className="flex flex-col items-center justify-center gap-2 bg-custom-headerBlack text-white h-16 w-24 absolute top-16 right-0">
+                <a className="flex items-center justify-center w-full no-underline text-white text-sm font-normal h-2/4 hover:bg-custom-lightGrey">Profile</a>
+                <button className="flex items-center justify-center bg-custom-headerBlack text-white border-none w-full h-2/4" onClick={() => dispatch({type:'LOGOUT'})}>Logout</button>
+            </div>}
         </header>
     );
 }

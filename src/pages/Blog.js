@@ -13,6 +13,7 @@ const Blog = () => {
     const {token, userInfo} = useContext(AuthContext) 
     const [comments, setComments] = useState([])
     const [toggleOptions, setToggleOptions] = useState(false)
+    const [isActive, setIsActive] = useState(false)
 
     useEffect(() => {
         (async() => {

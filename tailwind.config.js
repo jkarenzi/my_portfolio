@@ -11,6 +11,7 @@ module.exports = {
           black: "#161513",
           lightGrey: "#3a3a3a",
           orange: "#df5f17",
+          darkOrange: '#ae4c13',
           blue:"#5BADFF",
           arrowBlack: "#272727",
           timeColor: "#9b9b9b",

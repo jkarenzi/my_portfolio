@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import { useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
+import { errorToast, successToast } from "../components/Toast";
 
 const Profile = () => {
     const {token, userInfo} = useContext(AuthContext)
@@ -12,7 +13,7 @@ const Profile = () => {
     const [togglePasswordOverlay, setTogglePasswordOverlay] = useState(false)
     const [toggleEmailOverlay, setToggleEmailOverlay] = useState(false)
     const [toggleProfileOverlay, setToggleProfileOverlay] = useState(false)
-    const [toggleLoader, setToggleLoader] = useState(false)
+    const [isActive, setIsActive] = useState(false)
     const [newUsername, setNewUsername] = useState("")
     const [password, setPassword] = useState("")
     const [oldPassword, setOldPassword] = useState("")
@@ -28,6 +29,8 @@ const Profile = () => {
             newUsername
         }
 
+        setIsActive(true)
+
         try{
             const resp = await fetch(`${url}/usermgt/update_username`,{
                 method:"POST",
@@ -41,13 +44,13 @@ const Profile = () => {
             let response = await resp.json()
             
             if(resp.ok){
-                alert(response.msg)
+                successToast(response.msg)
                 setToggleUsernameOverlay(false)
             }else{
-                alert(response.msg)
+                errorToast(response.msg)
             }
         }catch(err){
-            alert(err.message)
+            errorToast(err.message)
         }
     }
 
@@ -58,6 +61,8 @@ const Profile = () => {
             oldPassword,
             newPassword
         }
+
+        setIsActive(true)
     
         try{
             const resp = await fetch(`${url}/usermgt/update_password`,{
@@ -70,15 +75,16 @@ const Profile = () => {
             })
         
             let response = await resp.json()
+            setIsActive(false)
             
             if(resp.ok){
                 setTogglePasswordOverlay(false)
-                alert(response.msg)
+                successToast(response.msg)
             }else{
-                alert(response.msg)
+                errorToast(response.msg)
             }     
         }catch(err){
-            alert(err.message)
+            errorToast(err.message)
         }
     }
 
@@ -89,6 +95,8 @@ const Profile = () => {
             password,
             newEmail
         }
+
+        setIsActive(true)
 
         try{
             const resp = await fetch(`${url}/usermgt/update_email`,{
@@ -101,15 +109,16 @@ const Profile = () => {
             })
         
             let response = await resp.json()
+            setIsActive(false)
             
             if(resp.ok){
                 setToggleEmailOverlay(false)
-                alert(response.msg)
+                successToast(response.msg)
             }else{
-                alert(response.msg)
+                errorToast(response.msg)
             }        
         }catch(err){
-            alert(err.message)
+            errorToast(err.message)
         }
     }
 
@@ -119,6 +128,8 @@ const Profile = () => {
         formData.append("id", userInfo._id)
         formData.append("password", password)
         formData.append("image", newProfile)
+
+        setIsActive(true)
 
         try{
             const resp = await fetch(`${url}/usermgt/update_profile_img`,{
@@ -130,15 +141,16 @@ const Profile = () => {
             })
         
             let response = await resp.json()
+            setIsActive(false)
             
             if(resp.ok){
                 setToggleProfileOverlay(false)
-                alert(response.msg)
+                successToast(response.msg)
             }else{
-                alert(response.msg)
+                errorToast(response.msg)
             }
         }catch(err){
-            alert(err.message)
+            errorToast(err.message)
         }
     }
 
@@ -160,12 +172,7 @@ const Profile = () => {
                             <label className="m-0">New Username</label>
                             <input type="text" onChange={(e) => setNewUsername(e.target.value)} className="outline-none text-white bg-custom-lightGrey border-b-boxBig border-custom-orange w-full" required/>
                         </div>
-                        <button type="submit" className="flex items-center justify-center bg-custom-orange text-white border-none rounded-2xl w-24 h-8">Submit</button>
-                        <div class="loader">
-                            <div class="dot dot1"></div>
-                            <div class="dot dot2"></div>
-                            <div class="dot dot3"></div>
-                        </div>
+                        <button type="submit" className={`flex items-center justify-center ${isActive?'bg-custom-darkOrange':'bg-custom-orange'} text-white border-none rounded-2xl w-24 h-8`}>Submit</button>
                     </form>
                 </div>
             </div>}
@@ -184,12 +191,7 @@ const Profile = () => {
                             <label className="m-0">New Password</label>
                             <input type="password" onChange={(e) => setNewPassword(e.target.value)} className="outline-none text-white bg-custom-lightGrey border-b-boxBig border-custom-orange w-full" required/>
                         </div>
-                        <button type="submit" className="flex items-center justify-center bg-custom-orange text-white border-none rounded-2xl w-24 h-8">Submit</button>
-                        <div class="loader">
-                            <div class="dot dot1"></div>
-                            <div class="dot dot2"></div>
-                            <div class="dot dot3"></div>
-                        </div>
+                        <button type="submit" className={`flex items-center justify-center ${isActive?'bg-custom-darkOrange':'bg-custom-orange'} text-white border-none rounded-2xl w-24 h-8`}>Submit</button>
                     </form>
                 </div>
             </div>}
@@ -208,12 +210,7 @@ const Profile = () => {
                             <label className="m-0">New Email</label>
                             <input type="email" onChange={(e) => setNewEmail(e.target.value)} className="outline-none text-white bg-custom-lightGrey border-b-boxBig border-custom-orange w-full" required/>
                         </div>
-                        <button type="submit" className="flex items-center justify-center bg-custom-orange text-white border-none rounded-2xl w-24 h-8">Submit</button>
-                        <div class="loader">
-                            <div class="dot dot1"></div>
-                            <div class="dot dot2"></div>
-                            <div class="dot dot3"></div>
-                        </div>
+                        <button type="submit" className={`flex items-center justify-center ${isActive?'bg-custom-darkOrange':'bg-custom-orange'} text-white border-none rounded-2xl w-24 h-8`}>Submit</button>
                     </form>
                 </div>
             </div>}
@@ -232,12 +229,7 @@ const Profile = () => {
                             <label className="m-0">New Profile Image</label>
                             <input type="file" onChange={(e) => setNewProfile(e.target.files[0])} accept="image/*" id="new-image" required/>
                         </div>
-                        <button type="submit" className="flex items-center justify-center bg-custom-orange text-white border-none rounded-2xl w-24 h-8">Submit</button>
-                        <div class="loader">
-                            <div class="dot dot1"></div>
-                            <div class="dot dot2"></div>
-                            <div class="dot dot3"></div>
-                        </div>
+                        <button type="submit" className={`flex items-center justify-center ${isActive?'bg-custom-darkOrange':'bg-custom-orange'} text-white border-none rounded-2xl w-24 h-8`}>Submit</button>
                     </form>
                 </div>
             </div>}
